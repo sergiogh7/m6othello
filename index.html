@@ -4,13 +4,22 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Othello</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-	<form>
+	<form id="formStart" action="index.html">
 		<label for="jugador1">Nom Jugador 1</label>
-		<input type="text" name="jugador1">
+		<input type="text" name="jugador1"><br>
 		<label for="jugador2">Nom Jugador 2</label>
-		<input type="text" name="jugador2">
+		<input type="text" name="jugador2"><br>
+		<label for="tamany">Tamany Taulell</label>
+		<select id="tamany">
+		    <option value="8" selected>8x8</option>
+		    <option value="10">10x10</option>
+		    <option value="16">16x16</option>
+	  	</select>
+	  	<input type="submit" value="Jugar" id="jugar">
 	</form>
+	<script src="script.js"></script>
 </body>
 </html>
