@@ -6,21 +6,37 @@
 
 var tamany;
 
+var nom1;
+
+var nom2;
+
 var tornNegre = true;
 
 document.getElementById("jugar").addEventListener("click", function() {
 	
-	tamany = document.getElementById("tamany").value;
+	nom1 = document.getElementById("jugador1").value;
 
-	document.getElementById("formStart").style.display = "none";
+	nom2 = document.getElementById("jugador2").value;	
 
-	document.getElementsByTagName("body")[0].style.background = "yellow";
+	if(nom1 != "" && nom2 != ""){
+		tamany = document.getElementById("tamany").value;
 
-	printarTablero();
-	centrals();
-	addCardListener();
+		document.getElementById("formStart").style.display = "none";
+
+		document.getElementsByTagName("body")[0].style.background = "yellow";
+
+		printarTablero();
+		centrals();
+		addCardListener();
+	}
 
 })
+
+function mostrarEstat(){
+
+
+	
+}
 
 function printarTablero(){
 
@@ -71,9 +87,10 @@ function addCardListener(){
 }
 
 function clicarCela (id){
+	
 	console.log("ID "+id);
 
-	console.log(tornNegre);
+	console.log("Torn "+tornNegre);
 
 	var imatge;
 
@@ -82,17 +99,21 @@ function clicarCela (id){
 
 		if(tornNegre){
 			imatge = "imatges/negra.png";
-			tornNegre = false;
 		}else{
 			imatge = "imatges/blanca.png";
-			tornNegre = true;
 		}
 
 
 		if(comprovarColocar(id,imatge)){
 		
 			document.getElementById(id).style.backgroundImage = "url("+imatge+")";
-		
+			
+			if(tornNegre){
+				tornNegre = false;
+			}else{
+				tornNegre = true;
+			}
+
 		}
 
 	}
@@ -104,20 +125,101 @@ function comprovarColocar(id,imatge){
 	//Agafem la posicio en la que hem clicat
 	var posicio = id.split("-");
 
-	var fil = parseInt(posicio[0]);
+	var filUser = parseInt(posicio[0]);
 
-	var col = parseInt(posicio[1]);
+	var colUser = parseInt(posicio[1]);
 
-	var potPosar = true;
+	var moviments = [
+		{
+			'fil' : 0,
+			'col' : -1
+		},
+		{
+			'fil' : -1,
+			'col' : -1
+		},	
+		{
+			'fil' : -1,
+			'col' : 0
+		},
+		{
+			'fil' : -1,
+			'col' : +1
+		},
+		{
+			'fil' : 0,
+			'col' : +1
+		},
+		{
+			'fil' : +1,
+			'col' : +1
+		},
+		{
+			'fil' : +1,
+			'col' : 0
+		},
+		{
+			'fil' : +1,
+			'col' : -1
+		},					
+	];
 
-	//console.log("Clic Usuari  url("+'"'+imatge+'"'+")");
+	var potPosar = false;
 
-	//console.log("Diagonal  "+(fil+1)+"-"+(col-1)+" "+document.getElementById((fil+1)+"-"+(col-1)).style.backgroundImage);
+	for (var i = 0; i < moviments.length; i++) {
+		//console.log(i + " " +document.getElementById((filUser+moviments[i].fil)+"-"+(colUser+moviments[i].col)).style.backgroundImage);
+		try{
+			if (!potPosar && document.getElementById((filUser+moviments[i].fil)+"-"+(colUser+moviments[i].col)).style.backgroundImage != "" && document.getElementById((filUser+moviments[i].fil)+"-"+(colUser+moviments[i].col)).style.backgroundImage != "url("+'"'+imatge+'"'+")") {
+				potPosar = trobarFitxaIgual(moviments[i],filUser,colUser,imatge);
+			}
+		}catch(e){}
 
+	}
 
+	console.log(potPosar);
 
-	console.log("ABANS return "+potPosar);
+	if(!potPosar){
+		alert("No pots colocar fitxa a "+ filUser +" - "+ colUser);
+	}
 
 	return potPosar;	
 }
 
+function trobarFitxaIgual(moviments,filUser,colUser,imatge){
+
+	//console.log("Dins funcio trobarFitxaIgual "+moviments.col);
+
+	var potPosar = false;
+
+	while(!potPosar && document.getElementById((filUser+moviments.fil)+"-"+(colUser+moviments.col)).style.backgroundImage != ""){
+
+		console.log("Fil "+moviments.fil);
+		console.log("Col "+moviments.col);
+
+		if(document.getElementById((filUser+moviments.fil)+"-"+(colUser+moviments.col)).style.backgroundImage != "url("+'"'+imatge+'"'+")"){
+			potPosar = false;
+		}else{
+			potPosar = true;
+		}
+
+		if (moviments.fil != 0) {
+			if(moviments.fil < 0){
+				moviments.fil--;
+			}else{
+				moviments.fil++;
+			}
+		}
+
+		if (moviments.col != 0) {
+			if(moviments.col < 0){
+				moviments.col--;
+			}else{
+				moviments.col++;
+			}
+		}
+
+	}
+
+	return potPosar;
+
+}
