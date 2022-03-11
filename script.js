@@ -12,7 +12,6 @@ document.getElementById("jugar").addEventListener("click", function() {
 
 	// Se asegura de que los inputs tengan algo escrito.
 	if(nom1 != "" && nom2 != ""){
-
 		// Recoge el tamaño del tablero, del input del formulario.
 		tamany = document.getElementById("tamany").value;
 
@@ -40,8 +39,6 @@ document.getElementById("jugar").addEventListener("click", function() {
 		alert("Falta el jugador 1.");
 	}
 
-
-
 })
 
 // Funcion que printa el tablero.
@@ -56,9 +53,8 @@ function printarTablero(){
 
 			
 			var idCelda = f+"-"+c; // ID de las celdas.
-			var idCeldaFx = f+""+c; // ID personalizado para los efectos de las celdas al pasar el raton por encima.
 
-			tablero += "<div class='celdas' id="+idCelda+" onmouseover='celdafx("+idCeldaFx+")' onmouseout='celdafx2("+idCeldaFx+")'></div>";
+			tablero += "<div class='celdas' id="+idCelda+" '></div>";
 			
 			
 		}
@@ -94,6 +90,9 @@ function addCardListener(){
 		for (var c = 1; c <= tamany; c++){
 			// Coge la posicion de la celda, escucha si hay un click y llama a la funcion de comprobacion.
 			document.getElementById(f+"-"+c).addEventListener("click", function(){clicarCela(this.id)});
+			// Efectos de la celda cuando pasa el raton por encima.
+			document.getElementById(f+"-"+c).addEventListener("mouseover", function(){celdafx(this.id)}); 
+			document.getElementById(f+"-"+c).addEventListener("mouseout", function(){celdafx2(this.id)}); celdafx
 
 		}
 	}
@@ -101,10 +100,6 @@ function addCardListener(){
 
 // Cuando clicka.
 function clicarCela (id){
-	
-	console.log("ID "+id);
-
-	console.log("Torn "+tornNegre);
 
 	var imatge;
 
@@ -418,15 +413,17 @@ function contadorColoresFichas(){
 	var negra = "imatges/negra.png";
 
 	var tamanyAmpliado = tamany * tamany; // Numero total de celdas del tablero.
-
+	
 	var numeroFichasNegras = 0; // Para guardar el numero de fichas negras en juego.
 	var numeroFichasBlancas = 0; // Para guardar el numero de fichas blancas en juego.
+
+	var fichasTotales;
 
 	// Crea una coleccion de divs que tienen el tag 'celdas'.
 	var celdasTablero = document.getElementsByClassName('celdas');
 
 	// Rellena un array con las posiciones de todo el tablero.
-	for(let t=1; t < tamanyAmpliado; t++){
+	for(let t=0; t < tamanyAmpliado; t++){
 
 			// Recoge la posicion de la celda de la coleccion de divs, que es la ID (Ejemplo: 2-5 --> fila 2 - columna 5.)
 			var posicionCelda = celdasTablero.item(t).id;
@@ -446,6 +443,34 @@ function contadorColoresFichas(){
 				
 			}
 	}
+
+	// En caso de que solo haya fichas blancas
+	if(numeroFichasBlancas > 0 && numeroFichasNegras == 0){
+		confirm("Enhorabuena " +nom2+ "! \nFichas negras: " + numeroFichasNegras + ". \nFichas blancas:" + numeroFichasBlancas + ".");
+
+	// O fichas negras.
+	}else if(numeroFichasNegras > 0 && numeroFichasBlancas == 0){
+		confirm("Enhorabuena " +nom1+ "! \nFichas negras: " + numeroFichasNegras + ". \nFichas blancas:" + numeroFichasBlancas + ".");
+	
+	}
+
+	fichasTotales = numeroFichasBlancas + numeroFichasNegras;
+
+	// Detector del final de juego.
+	if(fichasTotales == tamanyAmpliado){
+		
+		if(numeroFichasBlancas > numeroFichasNegras){
+			confirm("Enhorabuena " +nom2+ "! \nFichas negras: " + numeroFichasNegras + ". \nFichas blancas:" + numeroFichasBlancas + ".");
+
+		}else if(numeroFichasBlancas < numeroFichasNegras){
+			confirm("Enhorabuena " +nom1+ "! \nFichas negras: " + numeroFichasNegras + ". \nFichas blancas:" + numeroFichasBlancas + ".");
+
+		}else{
+			confirm("Empate!");
+		}
+
+		reiniciarJuego();
+	}
 }
 
 // Funcion que reincia el juego por completo.
@@ -460,49 +485,11 @@ function reiniciarJuego(){
 
 // Funcion que añade un efecto rojo a la celda si el raton esta encima de ella.
 function celdafx(id){
-	// Recibe una ID de la celda por parametro y la separa en un array de 2 posiciones.
-	var trozos = (""+id).split("");
-	var a = trozos[0];
-	var b = trozos[1];
-	var c = trozos[2];
-	var d = trozos[3];
-
-	if(id > 10 && id < 100){
-		document.getElementById(a+"-"+b).style.backgroundColor = "#b30000";
-
-	}else if(id > 100 && id <= 170){
-		document.getElementById(a+b+"-"+c).style.backgroundColor = "#b30000";
-
-	}else if(id >= 110 && id < 917){
-		document.getElementById(a+"-"+b+c).style.backgroundColor = "#b30000";
-
-	}else if(id >= 1009 && id < 1617){
-		document.getElementById(a+b+"-"+c+d).style.backgroundColor = "#b30000";
-
-	}
+	document.getElementById(id).style.backgroundColor = "#b30000";
 
 }
 
 // Igual que la funcion anterior, solo que vuelve a poner la celda del color original una vez sale el raton.
 function celdafx2(id){
-
-	var trozos = (""+id).split("");
-	var a = trozos[0];
-	var b = trozos[1];
-	var c = trozos[2];
-	var d = trozos[3];
-
-	if(id > 10 && id < 100){
-		document.getElementById(a+"-"+b).style.backgroundColor = "#edb78e";
-
-	}else if(id > 100 && id <= 170){
-		document.getElementById(a+b+"-"+c).style.backgroundColor = "#edb78e";
-
-	}else if(id >= 110 && id < 917){
-		document.getElementById(a+"-"+b+c).style.backgroundColor = "#edb78e";
-
-	}else if(id >= 1009 && id < 1617){
-		document.getElementById(a+b+"-"+c+d).style.backgroundColor = "#edb78e";
-
-	}
+	document.getElementById(id).style.backgroundColor = "#edb78e";
 }
