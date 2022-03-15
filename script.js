@@ -23,7 +23,6 @@ document.getElementById("jugar").addEventListener("click", function() {
 
 		// Llama a las funciones:
 		printarTablero(); // Muestra el tablero.
-		mostrarNombres();
 		centrals(); // Coloca las fichas centrales.
 
 		// Inicia los dos contadores de fichas de los jugadores por defecto --> 2 blancas, 2 negras.
@@ -87,11 +86,6 @@ function printarTablero(){
 	nombresYpuntos.insertBefore(divNom2,puntosJugador2);
 
 	muestraEstados();
-
-}
-
-function mostrarNombres (){
-
 
 }
 
