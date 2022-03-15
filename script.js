@@ -23,6 +23,7 @@ document.getElementById("jugar").addEventListener("click", function() {
 
 		// Llama a las funciones:
 		printarTablero(); // Muestra el tablero.
+		mostrarNombres();
 		centrals(); // Coloca las fichas centrales.
 
 		// Inicia los dos contadores de fichas de los jugadores por defecto --> 2 blancas, 2 negras.
@@ -44,7 +45,7 @@ document.getElementById("jugar").addEventListener("click", function() {
 // Funcion que printa el tablero.
 function printarTablero(){
 
-	var tablero = "<div id='estados'><div id='nombresYpuntos'><div>"+nom1+"</div><div id='puntosJugador1'></div><div>"+nom2+"</div><div id='puntosJugador2'></div></div><div id='turnos'><div id='colorJugando'>TURNO</div><div id='turnoColor'></div><div id='reiniciar' onclick='reiniciarJuego()'>REINICIAR<br>JUEGO</div></div></div><br>";
+	var tablero = "<div id='estados'><div id='nombresYpuntos'><div id='puntosJugador1'></div><div id='puntosJugador2'></div></div><div id='turnos'><div id='colorJugando'>TURNO</div><div id='turnoColor'></div><div id='reiniciar' onclick='reiniciarJuego()'>REINICIAR<br>JUEGO</div></div></div><br>";
 	
 	// Recorre el tamaño asignado (que viene por parametro) para el tablero que va a ser mostrado.
 	for (var f = 1; f <= tamany; f++) {
@@ -66,7 +67,31 @@ function printarTablero(){
 	document.getElementsByTagName('body')[0].innerHTML = tablero;
 	//document.getElementById('divTablero').innerHTML = tablero;
 
+	var nombresYpuntos = document.getElementById("nombresYpuntos");
+	var puntosJugador1 = document.getElementById("puntosJugador1");
+	var puntosJugador2 = document.getElementById("puntosJugador2");
+
+	console.log(nombresYpuntos);
+	console.log(puntosJugador1);
+
+	var divNom1 = document.createElement("div");
+	var divNom2 = document.createElement("div");
+
+	var textDivNom1 = document.createTextNode(nom1);
+	var textDivNom2 = document.createTextNode(nom2);
+
+	divNom1.appendChild(textDivNom1);
+	divNom2.appendChild(textDivNom2);
+
+	nombresYpuntos.insertBefore(divNom1,puntosJugador1);
+	nombresYpuntos.insertBefore(divNom2,puntosJugador2);
+
 	muestraEstados();
+
+}
+
+function mostrarNombres (){
+
 
 }
 
